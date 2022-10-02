@@ -1,21 +1,22 @@
 import dotenv from 'dotenv';
-import express, { Application, Request, Response } from 'express';
-import { router } from './api/routes';
-
 dotenv.config();
 
+import fastify from 'fastify';
+import { routes } from './api/routes';
+
 const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
-const server = express();
+const server = fastify({
+  logger: !!(process.env.NODE_ENV !== 'development'),
+});
 
-server.use(express.json());
-server.use(`/api/${process.env.API_VERSION}`, router);
-server.set('port', PORT);
+server.register(routes);
 
-server.listen(PORT, () => {
-  console.info(
-    `App is running at http://localhost:${server.get('port')} in ${server.get(
-      'env'
-    )} mode`
-  );
+server.listen({ port: PORT }, function (err, address) {
+  if (err) {
+    server.log.error(err);
+    process.exit(1);
+  }
+
+  console.info(`App is running at ${address} in ${process.env.NODE_ENV} mode`);
   console.info('Press CTRL-C to stop\n');
 });

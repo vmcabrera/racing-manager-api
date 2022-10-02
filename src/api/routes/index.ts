@@ -1,14 +1,20 @@
-import express, { Request, Response, Router } from 'express';
+import {
+  FastifyInstance,
+  FastifyPluginOptions,
+  FastifyReply,
+  FastifyRequest,
+} from 'fastify';
 import { HttpStatus } from '../utils/enums';
 
-const router: Router = express.Router();
-
-router.get('*', (req: Request, res: Response) => {
-  res
-    .status(HttpStatus.NOT_FOUND)
-    .send(
-      '<html><body><h1>Page not found <span>(404)</span></h1></body></html>'
-    );
-});
-
-export { router };
+export const routes = async (
+  server: FastifyInstance,
+  options: FastifyPluginOptions
+) => {
+  server.get('*', async (req: FastifyRequest, res: FastifyReply) => {
+    res.code(HttpStatus.NOT_FOUND).send({
+      message: 'Route not found',
+      error: 'Not Found',
+      statusCode: 404,
+    });
+  });
+};
