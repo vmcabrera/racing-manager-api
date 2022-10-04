@@ -2,7 +2,7 @@ import { Static } from '@sinclair/typebox';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { HttpStatus } from '../common/common.interface';
 import { AuthService } from './auth.service';
-import { RegisterRequest } from './dto/auth-register.dto';
+import { AuthRegisterRequest } from './dto/auth-register.dto';
 
 export class AuthController {
   private readonly authService: AuthService;
@@ -12,7 +12,7 @@ export class AuthController {
   }
 
   register = async (
-    req: FastifyRequest<{ Body: Static<typeof RegisterRequest> }>,
+    req: FastifyRequest<{ Body: Static<typeof AuthRegisterRequest> }>,
     res: FastifyReply
   ): Promise<void> => {
     const { username, email, password } = req.body;
