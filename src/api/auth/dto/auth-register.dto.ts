@@ -21,3 +21,10 @@ export const AuthRegisterResponse = {
     id: Type.String({ format: 'uuid' }),
   }),
 };
+
+export const AuthRegisterSchema = {
+  schema: {
+    body: AuthRegisterRequest,
+    response: AuthRegisterResponse,
+  },
+};
