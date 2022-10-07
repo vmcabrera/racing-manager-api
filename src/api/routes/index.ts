@@ -7,11 +7,13 @@ import {
 
 import { authRoutes } from '../auth/auth.routes';
 import { HttpStatus } from '../common/common.interface';
+import { jwtAuthPlugin } from '../plugins/jwt-auth.plugin';
 
 export const routes = async (
   server: FastifyInstance,
   options: FastifyPluginOptions
 ) => {
+  server.register(jwtAuthPlugin);
   server.register(authRoutes, { prefix: '/auth' });
 
   server.get('*', async (req: FastifyRequest, res: FastifyReply) => {
