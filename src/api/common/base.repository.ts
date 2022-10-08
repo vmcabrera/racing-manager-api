@@ -11,22 +11,22 @@ export abstract class Repository<T> {
 
   abstract save(data: Partial<T>): Promise<T>;
 
-  async findById(id: number): Promise<T[] | null> {
+  async findById(id: number): Promise<T | null> {
     const result: T[] = await pg.query(
       'SELECT * FROM $1:name WHERE $2:name = $3 LIMIT 1',
       [this.model.table, this.model.id, id]
     );
 
-    return result.length > 0 ? result : null;
+    return result.length > 0 ? result[0] : null;
   }
 
-  async findByUuid(uuid: string): Promise<T[] | null> {
+  async findByUuid(uuid: string): Promise<T | null> {
     const result: T[] = await pg.query(
       'SELECT * FROM $1:name WHERE $2:name = $3 LIMIT 1',
       [this.model.table, this.model.uuid, uuid]
     );
 
-    return result.length > 0 ? result : null;
+    return result.length > 0 ? result[0] : null;
   }
 
   async find(filter: Partial<T>): Promise<T[]> {
@@ -38,12 +38,12 @@ export abstract class Repository<T> {
     return result;
   }
 
-  async findOne(filter: Partial<T>): Promise<T[] | null> {
+  async findOne(filter: Partial<T>): Promise<T | null> {
     const result: T[] = await pg.query(
       'SELECT * FROM $1:name WHERE $2 LIMIT 1',
       [this.model.table, buildFormattedWhere(' AND ', filter)]
     );
 
-    return result.length > 0 ? result : null;
+    return result.length > 0 ? result[0] : null;
   }
 }
