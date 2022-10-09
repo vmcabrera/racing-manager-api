@@ -46,4 +46,12 @@ export abstract class Repository<T> {
 
     return result.length > 0 ? result[0] : null;
   }
+
+  async findAll(): Promise<T[]> {
+    const result: T[] = await pg.query('SELECT * FROM $1:name', [
+      this.model.table,
+    ]);
+
+    return result;
+  }
 }
