@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt';
 import { UserRepository } from '../user/user.repository';
 import { InternalError } from '../error/internal.error';
 import { User } from '../user/user.interface';
-import { AuthRegisterProps } from './auth.interface';
+import { AuthLoginProps, AuthRegisterProps } from './auth.interface';
 import { UnauthorizedError } from '../error/unauthorized.error';
 
 export class AuthService {
@@ -31,7 +31,7 @@ export class AuthService {
     return user;
   };
 
-  login = async (props: any): Promise<User> => {
+  login = async (props: AuthLoginProps): Promise<User> => {
     const { username, password } = props;
 
     const user = await this.userRepository.findOne({ username });

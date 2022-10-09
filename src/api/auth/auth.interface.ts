@@ -5,3 +5,8 @@ export interface AuthRegisterProps {
   first_name?: string;
   last_name?: string;
 }
+
+export interface AuthLoginProps {
+  username: string;
+  password: string;
+}
