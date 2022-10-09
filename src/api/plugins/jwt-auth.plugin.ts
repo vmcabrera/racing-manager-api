@@ -23,7 +23,6 @@ export const jwtAuthPlugin = fp<AuthPluginOptions>(async (server, opts) => {
       } catch (err) {
         res.send(err);
       }
-      next();
     }
   );
 });
