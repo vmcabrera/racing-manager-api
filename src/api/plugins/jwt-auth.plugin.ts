@@ -32,3 +32,9 @@ declare module 'fastify' {
     jwtAuthenticate(): string;
   }
 }
+
+declare module '@fastify/jwt' {
+  export interface FastifyJWT {
+    user: { id: string; iat: number; exp: number };
+  }
+}
