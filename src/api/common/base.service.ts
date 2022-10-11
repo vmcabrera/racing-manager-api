@@ -10,32 +10,32 @@ export abstract class Service<T> {
   abstract create(props: Partial<T>): Promise<T>;
 
   getById = async (id: number): Promise<T | null> => {
-    const constructor = await this.repository.findById(id);
+    const data = await this.repository.findById(id);
 
-    return constructor;
+    return data;
   };
 
   getByUuid = async (uuid: string): Promise<T | null> => {
-    const constructor = await this.repository.findByUuid(uuid);
+    const data = await this.repository.findByUuid(uuid);
 
-    return constructor;
+    return data;
   };
 
   get = async (filter: Partial<T>): Promise<T[]> => {
-    const constructor = await this.repository.find(filter);
+    const data = await this.repository.find(filter);
 
-    return constructor;
+    return data;
   };
 
   getOne = async (filter: Partial<T>): Promise<T | null> => {
-    const constructor = await this.repository.findOne(filter);
+    const data = await this.repository.findOne(filter);
 
-    return constructor;
+    return data;
   };
 
   getAll = async (): Promise<T[]> => {
-    const constructors = this.repository.findAll();
+    const data = this.repository.findAll();
 
-    return constructors;
+    return data;
   };
 }
