@@ -1,5 +1,10 @@
+import { IResultExt } from 'pg-promise';
+import { IResult } from 'pg-promise/typescript/pg-subset';
 import { pg } from '../database/database.connection';
-import { buildFormattedWhere } from '../database/database.helper';
+import {
+  buildFormattedSet,
+  buildFormattedWhere,
+} from '../database/database.helper';
 import { DBModel } from '../database/database.interface';
 
 export abstract class Repository<T> {
@@ -50,6 +55,34 @@ export abstract class Repository<T> {
   async findAll(): Promise<T[]> {
     const result: T[] = await pg.query('SELECT * FROM $1:name', [
       this.model.table,
+    ]);
+
+    return result;
+  }
+
+  async findAllPaginated(limit: number, offset: number): Promise<T[]> {
+    const result: T[] = await pg.query(
+      'SELECT * FROM $1:name LIMIT $2 OFFSET $3',
+      [this.model.table, limit, offset]
+    );
+
+    return result;
+  }
+
+  async updateByUuid(uuid: string, props: Partial<T>): Promise<T | null> {
+    const result: T[] = await pg.query(
+      'UPDATE $1:name SET $2 WHERE $3:name = $4 RETURNING *',
+      [this.model.table, buildFormattedSet(props), this.model.uuid, uuid]
+    );
+
+    return result.length > 0 ? result[0] : null;
+  }
+
+  async removeByUuid(uuid: string): Promise<IResultExt> {
+    const result = await pg.result('DELETE FROM $1:name WHERE $2:name = $3', [
+      this.model.table,
+      this.model.uuid,
+      uuid,
     ]);
 
     return result;
